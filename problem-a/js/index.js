@@ -48,7 +48,6 @@ function createColorBox (color, size) {
   return newDivElem;
 }
 
-
 /* Define a function `getElementWidth()` that takes in a DOM element (not a
 string!). This function should return the width in pixels (a number) of that
 element.
@@ -60,7 +59,6 @@ function getElementWidth(elem) {
   let width = elem.getBoundingClientRect();
   return width;
 }
-
 
 /* Define a function `renderPaletteRow()` that takes in two arguments: array of
 color strings (like a SINGLE ELEMENT of the `COLORS_9` object), and a "parent"
@@ -101,18 +99,17 @@ Tip: note that `COLORS_9` is an object, not an array! You'll need to use a
 
 Call your `renderPaletteTable()` method to display all the color palettes!
 */
-
-function renderPaletteTable () {
-  for (let colorRow in COLORS_9) {
-    for (let colorElem in colorRow) {
-      renderPaletteRow(colorElem, colorRow);
-    }
+function renderPaletteTable() {
+  for (let i = 0; i < Object.keys(COLORS_9).length; i++) {
+    let key = Object.keys(COLORS_9)[i];
+    renderPaletteRow(COLORS_9[key], document.querySelector('main'));
   }
 }
+renderPaletteTable();
 
 //Finally, remove the paragraph in the header that explains how to complete the
 //problem.
-
+console.log(Object.keys(COLORS_9)[1]);
 
 
 //Make functions and variables available to tester. DO NOT MODIFY THIS.
