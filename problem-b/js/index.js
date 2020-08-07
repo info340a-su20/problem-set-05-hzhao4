@@ -1,7 +1,7 @@
 'use strict';
 
 //Create a variable `form` that refers to the `<form>` element in the DOM.
-let form = document.querySelector("form");
+let form = document.querySelector(".form");
 
 /* Add an event listener to the `form` element that will listen for `'submit'`
 type events (which occur when the form is submitted). In the callback function
@@ -20,18 +20,16 @@ for this event listener, do the following:
      attribute a value of `true` (set the attribute directly with dot notation,
      don't use `setAttribute()`).
 */
-
-form.addEventListener('click', function(event) {
+form.addEventListener('submit', function(event) {
   event.preventDefault();
-  if (event.checkValidity()) {
+  if (form.checkValidity()) {
     form.classList.add("d-none");
-    document.querySelector("alert").removeClass("d-none");
+    document.querySelector("p").classList.remove("d-none");
   } else {
     form.classList.add("was-validated");
     document.querySelector('button').disabled = 'true';
   }
 });
-
 /* You should now be able to submit the form and see it highlight fields that
 are invalid. This validity is based on HTML attributes; for example, the "email"
 input has `type="email"` and the `required` attribute, so that it will be
@@ -111,9 +109,8 @@ function validatePasswordMatch() {
 events that happen on BOTH the `#passwordInput` and `#passwordConfirmInput`
 elements. You can select the elements individually or using `querySelectorAll()`.
 */
-validatePasswordMatch(function() {
-  document.querySelectorAll('#passwordInput', '#passwordConfirmInput');
-})
+document.querySelector("#passwordInput").addEventListener('input', validatePasswordMatch);
+document.querySelector("#passwordConfirmInput").addEventListener('input', validatePasswordMatch);
 
 /* Last you'll need to only enable the "submit" button if the form is valid. Use
 the `querySelectorAll()` method to select all 4 of the <input> elements. Use the
@@ -126,16 +123,16 @@ if the <form> element has the `was-validated` class. If so, set the button's
 This should disable the button until all of the fields are valid, but only after
 the user tries to submit once (which is a polite user experience)
 */
-document.querySelectorAll('input').forEach(function(input) {
+var input = document.querySelectorAll('input');
+input.forEach(function(input) {
   input.addEventListener('input', function validateInput() {
     if (document.querySelector('.form').classList.contains("was-validated")) {
-      document.querySelector('button').disabled = 'true';
+      document.querySelector('button').disabled = true;
     } else {
-      document.querySelector('button').disabled = 'false';
+      document.querySelector('button').disabled = false;
     }
   })
 });
-
 //Make functions and variables available to tester. DO NOT MODIFY THIS.
 if(typeof module !== 'undefined' && module.exports){
   /* eslint-disable */
