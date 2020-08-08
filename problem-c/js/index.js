@@ -25,15 +25,17 @@ let state = {
 function createTaskItemElement(task) {
   let item = document.createElement("li");
   item.textContent = task.description;
-  if (item.classList.contains("font-strike")) {
-    item.classList.remove("font-strike");
-  }
   if (task.complete) {
-    task.complete = true;
     item.classList.add("font-strike");
-  } else {
-    task.complete = false;
   }
+  item.addEventListener('click', function() {
+    if (task.complete) {
+      task.complete = false;
+    } else {
+      task.complete = true;
+    }
+    renderTaskList(state.taskList);
+  })
   return item;
 }
 
@@ -44,7 +46,7 @@ function createTaskItemElement(task) {
 //current task list is shown after this render call!
 function renderTaskList(taskList) {
   let list = document.querySelector("ol");
-  list.length = 0;
+  list.textContent = "";
   for (let i = 0; i < taskList.length; i++) {
     list.appendChild(createTaskItemElement(taskList[i]));
   }
@@ -65,9 +67,10 @@ renderTaskList(state.taskList);
 //function; it should not interact directly with the DOM!
 function addNewTask() {
   state.taskList.push({
-    id: Math.max(taskList.id)+1, description: state.inputtedText, complete: false
+    id: state.taskList.length, description: state.inputtedText, complete: false
   })
-  inputtedText = "";
+  state.inputtedText = "";
+  renderTaskList(state.taskList);
 }
 
 //To handle user input, add another event listener to the `<input>` element that
@@ -76,7 +79,7 @@ function addNewTask() {
 //`inputtedText` property to have the `value` of the `<input>` element.
 let inputElem = document.querySelector('input');
 inputElem.addEventListener('input', function() {
-  state.inputtedText = input.value;
+  state.inputtedText = inputElem.value;
   renderInput();
 })
 
@@ -86,10 +89,7 @@ inputElem.addEventListener('input', function() {
 //
 //You should now be able to add new items to your task list!
 //Note that items will not add when you hit the "enter" key.
-let addTaskElem = document.querySelector("#add-task");
-addTaskElem.addEventListener('click', function() {
-  addNewTask();
-})
+document.querySelector('button').addEventListener('click', addNewTask);
 
 //Time to fix some of the user experience. Define a new function `renderInput()`
 //that does two things:
@@ -104,9 +104,9 @@ addTaskElem.addEventListener('click', function() {
 function renderInput() {
   document.querySelector('input').value = state.inputtedText;
   if (state.inputtedText === "") {
-    document.querySelector('button').disable = true;
+    document.querySelector('button').disabled = true;
   } else {
-    document.querySelector('button').disable = false;
+    document.querySelector('button').disabled = false;
   }
 }
 
